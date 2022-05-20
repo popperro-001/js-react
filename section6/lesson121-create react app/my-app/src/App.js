@@ -40,16 +40,27 @@ function Btn(){
   return <button>{logged ? 'Enter' : text}</button>
 }
 
+function WhoAmI({name, surname, link}) {
+  return(
+    <div>
+      <h1>My name is {name}, surname - {surname}</h1>
+      {/* <h1>My name is {name.firstName}, surname - {surname}</h1>
+      <h1>My name is {name()}, surname - {surname}</h1> */}
+      <a href={link}>My profile</a>
+    </div>
+  )
+}
+
 function App() {
   return (
     <div className="App">
-        <Header/>
-        <Field/>
-        <Btn/>
-        <Field2/>
+        <WhoAmI name="Pavel" surname="Pak" link="facebook.com"/>
+        {/* <WhoAmI name={{firstName: 'Mike'}} surname="Wazowski" link="instagram.com"/>
+        <WhoAmI name={() => {return 'Ralph'}} surname="Pak" link="facebook.com"/> */}
     </div>
   );
 }
+
 
 export {Header};
 export default App;
