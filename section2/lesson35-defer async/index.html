@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Document</title>
+
+</head>
+
+<body>
+    <!-- defer property make it sure to load script after DOMContent is loaded, script loading is managed togather with DOM but in the background -->
+    <script defer src="script.js"></script>
+    <script defer src="test.js"></script>
+
+    <!-- async does not wait other scripts to complete loading and other scripts don't wait async. it started right after loading is completed. it loads togather with DOM in the background. if we use async we need to be sure that script does not depend on DOM structure and on other scripts-->
+    <script async src="script.js"></script>
+    <script async src="test.js"></script>
+    <p>Hello world!</p>
+    <p>Second message</p>
+
+</body>
+
+</html>
