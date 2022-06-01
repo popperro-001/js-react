@@ -1,60 +1,54 @@
 // import logo from './logo.svg';
 import React from 'react';
 import './App.css';
+import {Component} from 'react';
 
-const Header = () => {
-  return <h2>Hello World!</h2>
-}
 
-const Field = () => {
-  const holder = 'Enter here';
-  const styledField = {
-    width: '300px'
-  }
-  return <input type="text" 
-                placeholder={holder} 
-                style={styledField}/>
-}
-
-class Field2 extends React.Component {
-  render(){
-    const holder = 'Enter here';
-    const styledField = {
-      width: '300px'
+class WhoAmI extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      years: 27,
+      text: 'xxx',
+      position: ''
     }
-
-    return <input type="text" 
-                  placeholder={holder} 
-                  style={styledField}/>
   }
-}
 
-function Btn(){
-  const text = 'Log in';
-  const logged = true;
+  nextYear = () => {
+    console.log('+++');
+    this.setState(state => ({
+      years: state.years + 1
+    }))
+  }
 
-  // const res = () => {
-  //   return 'Log in';
-  // }
+  commitInputChanges = (e) => {
+    this.setState({
+      position: e.target.value
+    })
+  }
 
-  return <button>{logged ? 'Enter' : text}</button>
-}
-
-function WhoAmI({name, surname, link}) {
-  return(
-    <div>
-      <h1>My name is {name}, surname - {surname}</h1>
-      {/* <h1>My name is {name.firstName}, surname - {surname}</h1>
-      <h1>My name is {name()}, surname - {surname}</h1> */}
-      <a href={link}>My profile</a>
-    </div>
-  )
+  render() {
+    const {name, surname, link} = this.props;
+    const {position, years, text} = this.state;
+    return (      
+      <div>
+        <button onClick={this.nextYear}>{text}</button>
+        <h1> My name is {name}, surname - {surname}, age - {years}, position - {position}</h1>
+        <a href={link}>My profile</a>
+        <form>
+          <span>Enter position</span>
+          <input type="text" onChange={this.commitInputChanges} />
+        </form>
+      </div>
+    )
+  }
 }
 
 function App() {
   return (
     <div className="App">
         <WhoAmI name="Pavel" surname="Pak" link="facebook.com"/>
+        <WhoAmI name='John' surname='Smith' link='instagram.com'/>
         {/* <WhoAmI name={{firstName: 'Mike'}} surname="Wazowski" link="instagram.com"/>
         <WhoAmI name={() => {return 'Ralph'}} surname="Pak" link="facebook.com"/> */}
     </div>
@@ -62,5 +56,7 @@ function App() {
 }
 
 
-export {Header};
+
 export default App;
+
+
