@@ -1,3 +1,5 @@
+import { Component } from 'react';
+
 import AppInfo from '../app-info/app-info';
 import SearchPanel from '../search-panel/search-panel';
 import AppFilter from '../app-filter/app-filter';
@@ -8,29 +10,101 @@ import './app.css';
 
 
 
-function App(){
+class App extends Component{
+    constructor(props) {
+        super(props);
+        this.state = {
+            data: [
+                {name: 'Mike Wazowski', salary: 800, increase: true, rise: true, id: 1},
+                {name: 'James P. Sullivan', salary: 3000, increase: false, rise: false, id: 2},
+                {name: 'Randall Boggs', salary: 5000, increase: false, rise: false, id: 3},
+                {name: 'Boo', salary: 1500, increase: true, rise: false, id: 4},
+            ]
+        };
+        this.maxId = 5;
+    }
 
-    const data = [
-        {name: 'Mike Wazowski', salary: 800, increase: true, id: 1},
-        {name: 'James P. Sullivan', salary: 3000, increase: false, id: 2},
-        {name: 'Randall Boggs', salary: 5000, increase: false, id: 3},
-        {name: 'Boo', salary: 1500, increase: true, id: 4},
-    ]
+    deleteItem = (id) => {
+        this.setState(({data}) => {
+            /* Option 1 */
+            const index = data.findIndex(elem => elem.id === id);            
+            const before = data.slice(0, index);//copy array starting from 0 to index
+            const after = data.slice(index +  1);//copy array starting from index+1 to the end
+            const newArray1 = [...before, ...after];//create new array by joining two small arrays
 
-    return (
-        <div className="app">
-            <AppInfo/>
+            /* Option 2 */
+            const newArray2 = data.filter(item => item.id !== id);//create new array except the deleted id
 
-            <div className="search-panel">
-                <SearchPanel/>
-                <AppFilter/>
+            return {
+                data: newArray2
+            }
+        })
+    }
+
+    addItem= (name, salary) => {
+        const newItem = {
+            name,
+            salary,
+            increase: false,
+            rise: false,
+            id: this.maxId++
+        };
+
+        this.setState(({data}) => {
+            const newArr = [...data, newItem];
+            return {
+                data: newArr
+            }
+        });
+    }
+
+    onToggleIncrease = (id) => {
+        this.setState(({data}) => {
+            const index = data.findIndex(elem => elem.id === id);
+            const oldItem = data[index];
+            const newItem = {...oldItem, increase: !oldItem.increase};
+            const newArray = [...data.slice(0, index), newItem, ...data.slice(index + 1)];
+
+            return {
+                data: newArray
+            }
+        })
+    }
+
+    onToggleRise = (id) => {
+        this.setState(({data}) => ({
+            data: data.map(item => {
+                if(item.id === id) {
+                    return {...item, rise: !item.rise};
+                }
+                return item;
+            })
+        }))
+    }
+
+    render() {
+        const employees = this.state.data.length;
+        const increased = this.state.data.filter(item => item.increase).length;
+        return (
+            <div className="app">
+                <AppInfo
+                    employees={employees}
+                    increased={increased}/>
+    
+                <div className="search-panel">
+                    <SearchPanel/>
+                    <AppFilter/>
+                </div>
+    
+                <EmployeeList 
+                    data={this.state.data}
+                    onDelete={this.deleteItem}
+                    onToggleIncrease={this.onToggleIncrease}
+                    onToggleRise={this.onToggleRise}/>
+                <EmployeeAddForm onAdd={this.addItem}/>
             </div>
-
-            <EmployeeList data={data}/>
-
-            <EmployeeAddForm/>
-        </div>
-    );
+        );
+    }
 }
 
 export default App;
