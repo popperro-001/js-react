@@ -1,7 +1,7 @@
 // import logo from './logo.svg';
 import React from 'react';
 import './App.css';
-import {Component} from 'react';
+import {Component, Fragment} from 'react';
 
 
 class WhoAmI extends Component {
@@ -31,15 +31,15 @@ class WhoAmI extends Component {
     const {name, surname, link} = this.props;
     const {position, years, text} = this.state;
     return (      
-      <div>
+      <Fragment>
         <button onClick={this.nextYear}>{text}</button>
         <h1> My name is {name}, surname - {surname}, age - {years}, position - {position}</h1>
         <a href={link}>My profile</a>
         <form>
-          <span>Enter position</span>
+          <span style={{fontSize: 40, color: 'red'}}>Enter position</span>
           <input type="text" onChange={this.commitInputChanges} />
         </form>
-      </div>
+      </Fragment>
     )
   }
 }
