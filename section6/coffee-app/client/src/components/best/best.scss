@@ -1,0 +1,28 @@
+@import '../../style/style.scss'; 
+
+.best {
+    display: flex;
+    flex-direction: column;
+    min-height: 500px;
+    background-image: url('../../images/best/best_bg.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    padding-top: 80px;
+    text-align: center;
+    align-items: center;
+    h2 {      
+        display: block;  
+        font-weight: 400;
+        font-size: 24px;
+        color: #000000;
+    }
+    .card_wrapper {
+        width: 800px;
+        margin-top: 40px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        column-gap: 70px;
+        justify-items: center;
+    }
+}

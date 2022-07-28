@@ -1,0 +1,13 @@
+@import '../../style/style.scss';
+
+.product_list {
+    padding: 20px 0;
+    margin: 0 auto;
+    width: 800px;
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 70px;
+    row-gap: 60px;
+    justify-items: center;
+}

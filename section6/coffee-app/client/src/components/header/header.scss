@@ -1,0 +1,20 @@
+@import '../../style/style.scss'; 
+
+.header {
+    display: flex;    
+    padding-left: 150px;    
+    a {
+        display: flex;
+        flex-direction: row;        
+        align-items:flex-end;
+        margin-right: 40px;
+        font-weight: 400;
+        font-size: 12px;               
+        color: #FFFFFF;
+        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        text-decoration: none;
+        &:hover {
+            color: #FFFFFF;
+        }
+    }
+}

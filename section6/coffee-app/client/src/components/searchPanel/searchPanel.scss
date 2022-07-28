@@ -1,0 +1,22 @@
+@import '../../style/style.scss';
+
+.search_panel {
+    .search_label {
+        margin-right: 20px;
+        font-weight: 400;
+        font-size: 14px;
+        color: #000000;        
+    }
+    .search_input {
+        width: 180px;
+        height: 30px;
+        background: #FFFFFF;
+        border: #FFFFFF;
+        box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.25);
+        border-radius: 4px;
+        padding-left: 35px;
+        font-weight: 400;
+        font-size: 12px;
+        color: rgba(0, 0, 0, 0.5);
+    }
+}

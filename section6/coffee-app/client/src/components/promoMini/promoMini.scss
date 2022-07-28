@@ -1,0 +1,18 @@
+@import '../../style/style.scss'; 
+
+.promo_mini {
+    min-height: 260px;
+    background-image: url('../../images/promo_mini/promo_mini_bg.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    padding-top: 30px;
+    text-align: center;
+    h1 {
+        margin-top: 60px;
+        font-weight: 700;
+        font-size: 40px;
+        line-height: 58px;
+        color: #FFFFFF;
+    }
+}
