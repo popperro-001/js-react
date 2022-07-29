@@ -44,7 +44,10 @@ class CharList extends Component {
             if(char.thumbnail.endsWith('image_not_available.jpg')) {
                 classNames += 'not_found'
             }
-            return <li className="char__item" key={char.id}>
+            return <li 
+                        className="char__item" 
+                        key={char.id}
+                        onClick={() => this.props.onCharSelected(char.id)}>
                         <img src={char.thumbnail} alt={char.name} className={classNames}/>
                         <div className="char__name">{char.name}</div>
                     </li>
