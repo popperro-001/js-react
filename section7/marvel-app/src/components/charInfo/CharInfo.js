@@ -23,7 +23,7 @@ class CharInfo extends Component {
         if(this.props.charId !== prevProps.charId) {//compare with prevProps to not go to infinite loop
             this.updateChar();
         }
-    }
+    }    
 
     updateChar = () => {
         const {charId} = this.props;
@@ -34,7 +34,7 @@ class CharInfo extends Component {
         this.marvelService
             .getCharacterById(charId)
             .then(this.onCharLoaded)
-            .catch(this.onError);
+            .catch(this.onError);        
     }
 
     onCharLoaded = (char) => {
