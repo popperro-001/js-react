@@ -3,6 +3,8 @@ import React from 'react';
 import './App.css';
 import {Component} from 'react';
 import styled from 'styled-components';
+import BootstrapTest from './BootstrapTest';
+
 
 
 const EmpItem = styled.div`
@@ -78,13 +80,87 @@ const Wrapper = styled.div`
   margin: 80px auto 0 auto;
 `;
 
+const DynamicGreeting = (props) => {
+  return (
+    <div className={'mb-3 p-3 border border-' + props.color}>
+      {
+        React.Children.map(props.children, child => {
+          return React.cloneElement(child, {className: 'shadow p-3 m-3 border rounded'})
+        })
+      }
+    </div>
+  )
+}
+
+const HelloGreeting = () => {
+  return (
+    <div style={{'width': '600px', 'margin': '0 auto'}}>
+      <DynamicGreeting  color={'primary'}>
+        <h2>Hello world!</h2>
+      </DynamicGreeting>
+    </div>
+  )
+}
+
+const Message = (props) => {
+  return (
+    <h2>The counter is {props.counter}</h2>
+  )
+}
+
+class Counter extends Component {
+  state = {
+    counter: 0
+  }
+
+  changeCounter = () => {
+    this.setState(({counter}) => ({
+      counter: counter + 1
+    }))
+  }
+
+  render() {
+    return (
+      <>
+        <button
+          className={'btn btn-primary'}
+          onClick={this.changeCounter}>
+            Click me
+        </button> 
+        {this.props.someRender(this.state.counter)}
+      </>
+    );
+  }
+}
+
 function App() {
   return (
     <Wrapper>
+      <Counter someRender={counter => (
+        <Message counter={counter}/>
+      )}/>  
+      <HelloGreeting/>
+        <BootstrapTest
+          left = {
+            <DynamicGreeting color={'primary'}>
+              <h2>Hello Pavel!</h2>
+              <h2>How are you today?</h2>
+            </DynamicGreeting>
+          }
+          right = {
+            <DynamicGreeting color={'primary'}>
+              <h2>Hi Friend!</h2>
+              <h2>How do you do?</h2>
+            </DynamicGreeting>
+          }
+        />
+
         <WhoAmI name="Pavel" surname="Pak" link="facebook.com"/>
         <WhoAmI name='John' surname='Smith' link='instagram.com'/>
         {/* <WhoAmI name={{firstName: 'Mike'}} surname="Wazowski" link="instagram.com"/>
         <WhoAmI name={() => {return 'Ralph'}} surname="Pak" link="facebook.com"/> */}
+
+        
     </Wrapper>
   );
 }
