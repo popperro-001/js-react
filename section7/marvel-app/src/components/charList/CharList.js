@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 import MarvelService from '../../services/MarvelService';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import Spinner from '../spinner/Spinner';
@@ -55,8 +56,20 @@ class CharList extends Component {
         })
     }    
 
+    itemRefs = [];
+
+    setRef = ref => {
+        this.itemRefs.push(ref);
+    }
+
+    focusOnItem = (id) => {
+        this.itemRefs.forEach(item => item.classList.remove('char__item_selected'));
+        this.itemRefs[id].classList.add('char__item_selected');
+        this.itemRefs[id].focus();
+    }
+
     renderItems(arr) {
-        const items = arr.map(char => {    
+        const items = arr.map((char, i) => {    
             let classNames = '';                          
             if(char.thumbnail.endsWith('image_not_available.jpg')) {
                 classNames += 'not_found'
@@ -64,7 +77,17 @@ class CharList extends Component {
             return <li 
                         className="char__item" 
                         key={char.id}
-                        onClick={() => this.props.onCharSelected(char.id)}>
+                        tabIndex={0}
+                        ref={this.setRef}
+                        onClick={() => {
+                            this.props.onCharSelected(char.id);
+                            this.focusOnItem(i)}}
+                        onKeyPress={(e) => {
+                            if(e.key === ' ' || e.key === 'Enter') {
+                                this.props.onCharSelected(char.id);
+                                this.focusOnItem(i);
+                            }
+                        }}>
                         <img src={char.thumbnail} alt={char.name} className={classNames}/>
                         <div className="char__name">{char.name}</div>
                     </li>
@@ -100,6 +123,10 @@ class CharList extends Component {
             </div>
         )
     }
+}
+
+CharList.propTypes = {
+    onCharSelected: PropTypes.func.isRequired
 }
 
 export default CharList;
