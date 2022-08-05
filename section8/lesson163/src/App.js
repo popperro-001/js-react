@@ -112,6 +112,8 @@ const Slider = (props) => {
 
     return (
         <Container className='mt-5'>
+            <Form/>
+
             <div className="slider w-50 m-auto">                
                 <Slide getSomeImages={getSomeImages}/>
                 <div className="text-center mt-5">Active slide {slide} <br/> {autoplay ? 'auto' : null}</div>
@@ -128,7 +130,7 @@ const Slider = (props) => {
                         onClick={toggleAutoplay}>toggle autoplay</button>
                 </div>
             </div>
-            <Form/>
+            
         </Container>
     )
 }
@@ -147,25 +149,47 @@ const Slide = ({getSomeImages}) => {
     )
 }
 
-const Form = () => {
-    const [text, setText] = useState('');
+//custom hook
+function useInputWithValidate(initialValue) {
+    const [value, setValue] = useState(initialValue);
 
-    const myRef = useRef(1);   
+    const onChange = event => {
+        setValue(event.target.value);
+    }
 
-    useEffect(() => {
-        myRef.current = text;
-    });
+    const validateInput = () => {return value.search(/\d/) >= 0}
+
+    return {value, onChange, validateInput}
+}
+
+const Form = () => { 
+    const input = useInputWithValidate('');
+    const textArea = useInputWithValidate('');   
+
+    const color = input.validateInput() ? 'text-danger' : null;
 
     return (
         <form className='w-50 border mt-5 mb-5 p-3 m-auto'>
             <div className="mb-3">
+                <input value={`${input.value} / ${textArea.value}`} type="text" className='form-control' readOnly/>
                 <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
-                <input onChange={(e) => setText(e.target.value)} type="email" className="form-control" id="exampleInputEmail1" placeholder='name@example.com'/>
+                <input 
+                    onChange={input.onChange} 
+                    value={input.value}
+                    type="email" 
+                    className={`form-control ${color}`} 
+                    id="exampleInputEmail1" 
+                    placeholder='name@example.com'/>
                 
             </div>
             <div className="mb-3">
                 <label htmlFor="exampleInputTextarea1" className="form-label">Example textarea</label>
-                <textarea value={myRef.current} className="form-control" id="exampleInputTextarea1" rows="3"></textarea>
+                <textarea 
+                    value={textArea.value}
+                    onChange={textArea.onChange}
+                    className="form-control" 
+                    id="exampleInputTextarea1" 
+                    rows="3"></textarea>
             </div>            
         </form>
     )
