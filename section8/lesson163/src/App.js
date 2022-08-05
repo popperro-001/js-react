@@ -1,4 +1,4 @@
-import {Component, useState, useEffect} from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import {Container, Button} from 'react-bootstrap';
 import './App.css';
 // class Slider extends Component {
@@ -54,19 +54,28 @@ import './App.css';
 //     }
 // }
 
-const calcValue = () => {
-    console.log('random');
-    return Math.floor(Math.random() * (50 - 1) + 1);
+const countTotal = (num) => {
+    console.log('counting...');
+    return num + 10;
 }
 
 const Slider = (props) => {
 
-    const [slide, setSlide] = useState(calcValue);//if you need lazy call of function i.e. only once then pass only name of the function or callback. if you pass calcVal() it will be called each time when setState calls
+    const [slide, setSlide] = useState(0);//if you need lazy call of function i.e. only once then pass only name of the function or callback. if you pass calcVal() it will be called each time when setState calls
     const [autoplay, setAutoplay] = useState(false);
 
     function logging() {
         console.log('log!')
     }
+
+    const getSomeImages = useCallback(() => {
+        console.log('fetching');
+        return [
+            'https://images.pexels.com/photos/9320207/pexels-photo-9320207.jpeg?cs=srgb&dl=pexels-juan-samudio-9320207.jpg&fm=jpg',
+            'https://images.pexels.com/photos/7111469/pexels-photo-7111469.jpeg?cs=srgb&dl=pexels-piotr-arnoldes-7111469.jpg&fm=jpg',
+            "https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg"
+        ]
+    }, []);
 
     useEffect(() => {
         console.log('effect');
@@ -89,11 +98,24 @@ const Slider = (props) => {
         setAutoplay(autoplay => !autoplay);//use callback function to run it in async mode
     }
 
+    const total = useMemo(() => {
+        return countTotal(slide);
+    }, [slide]);
+
+    const style = useMemo(() => ({
+        color: slide > 3 ? 'red' : 'black'
+    }), [slide]);
+
+    useEffect(() => {
+        console.log('styles!')
+    }, [style]);
+
     return (
         <Container className='mt-5'>
-            <div className="slider w-50 m-auto">
-                <img className="d-block w-100" src="https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg" alt="slide" />
+            <div className="slider w-50 m-auto">                
+                <Slide getSomeImages={getSomeImages}/>
                 <div className="text-center mt-5">Active slide {slide} <br/> {autoplay ? 'auto' : null}</div>
+                <div style={style} className="text-center mt-5">Total slides: {total}</div>
                 <div className="buttons mt-3">
                     <button 
                         className="btn btn-primary me-2"
@@ -107,6 +129,20 @@ const Slider = (props) => {
                 </div>
             </div>
         </Container>
+    )
+}
+
+const Slide = ({getSomeImages}) => {
+    const [images, setImages] = useState([]);
+
+    useEffect(() => {
+        setImages(getSomeImages())
+    }, [getSomeImages])
+
+    return (
+        <>
+            {images.map((url, i) => <img className="d-block w-100" src={url} alt="slide" key={i}/>)}
+        </>
     )
 }
 
