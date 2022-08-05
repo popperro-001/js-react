@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import {Container, Button} from 'react-bootstrap';
 import './App.css';
 // class Slider extends Component {
@@ -128,6 +128,7 @@ const Slider = (props) => {
                         onClick={toggleAutoplay}>toggle autoplay</button>
                 </div>
             </div>
+            <Form/>
         </Container>
     )
 }
@@ -143,6 +144,30 @@ const Slide = ({getSomeImages}) => {
         <>
             {images.map((url, i) => <img className="d-block w-100" src={url} alt="slide" key={i}/>)}
         </>
+    )
+}
+
+const Form = () => {
+    const [text, setText] = useState('');
+
+    const myRef = useRef(1);   
+
+    useEffect(() => {
+        myRef.current = text;
+    });
+
+    return (
+        <form className='w-50 border mt-5 mb-5 p-3 m-auto'>
+            <div className="mb-3">
+                <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
+                <input onChange={(e) => setText(e.target.value)} type="email" className="form-control" id="exampleInputEmail1" placeholder='name@example.com'/>
+                
+            </div>
+            <div className="mb-3">
+                <label htmlFor="exampleInputTextarea1" className="form-label">Example textarea</label>
+                <textarea value={myRef.current} className="form-control" id="exampleInputTextarea1" rows="3"></textarea>
+            </div>            
+        </form>
     )
 }
 
