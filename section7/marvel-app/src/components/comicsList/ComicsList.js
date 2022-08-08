@@ -35,7 +35,7 @@ const ComicsList = () => {
     function renderItems(arr) {
         const items = arr.map((comics, i) => {
             return <li className="comics__item"
-                        key={comics.id}>
+                        key={i}>
                         <a href={comics.homepage}>
                             <img src={comics.thumbnail} alt={comics.title} className="comics__item-img"/>
                             <div className="comics__item-name">{comics.title}</div>
