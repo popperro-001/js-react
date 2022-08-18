@@ -2,23 +2,6 @@
 import { Formik, Form, Field, ErrorMessage, useField } from 'formik';
 import * as Yup from 'yup';
 
-// const validate = values => {
-//     const errors = {};
-
-//     if(!values.name) {
-//         errors.name = 'Required field!'
-//     } else if (values.name.length < 2) {
-//         errors.name = 'Should be minimum 2 characters'
-//     }
-
-//     if(!values.email) {
-//         errors.email = 'Required field!'
-//     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
-//         errors.email = 'Wrong email format'
-//     }
-
-//     return errors;
-// }
 
 const MyTextInput = ({label, ...props}) => {
     const [field, meta] = useField(props);
@@ -49,36 +32,6 @@ const MyCheckBox = ({children, ...props}) => {
 };
 
 const CustomForm = () => {
-    // const formik = useFormik({
-    //     initialValues: {
-    //         name: '',
-    //         email: '',
-    //         amount: 0,
-    //         currency: '',
-    //         text: '',
-    //         terms: false
-    //     },
-    //     // validate,
-    //     validationSchema: Yup.object({
-    //         name: Yup.string()
-    //                 .min(2, 'Should be minimum 2 characters')
-    //                 .required('Required field!'),
-    //         email: Yup.string()
-    //                 .email('Wrong email format')
-    //                 .required('Required field!'),
-    //         amount: Yup.number()
-    //                     .min(5, 'Can not be less than 5')
-    //                     .required('Required field!'),
-    //         currency: Yup.string()
-    //                     .required('Select currency'),
-    //         text: Yup.string()
-    //                 .min(10, 'Should be minimum 10 characters'),
-    //         terms: Yup.boolean()
-    //                 .required('Need to agree with terms')
-    //                 .oneOf([true], 'Need to agree with terms')
-    //     }),
-    //     onSubmit: values => console.log(JSON.stringify(values, null, 2))
-    // });
 
     return (
        <Formik
