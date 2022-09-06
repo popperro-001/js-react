@@ -111,6 +111,16 @@ const MyFinalForm = () => {
     {key: 'USD', value: 'USD'},
   ]
 
+  const SUPPORTED_FORMATS = [
+    'image/jpg',
+    'image/jpeg',
+    'image/gif',
+    'image/png',
+    'application/pdf',
+    'application/vnd.ms-excel',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  ]
+
   const travelBeforeFiles = [
     {name: 'travel_plan', label: '출장계획서(여비 지출 내용 포함)'},
     {name: 'platform_screen', label: '(숙박/항공) (여행사 이용 시) 견적서 또는 (직접 플랫폼 결제 시) 결제 예상금액 캡처화면'},
@@ -179,8 +189,7 @@ const MyFinalForm = () => {
         currency_type: 'KRW',
         travel_expense_amount: 0,       
         rent_fee: 0, 
-        terms: false 
-
+        terms: false,
       }}
       validationSchema = {Yup.object({
         company: Yup.string()
@@ -207,7 +216,21 @@ const MyFinalForm = () => {
                                 .max(1000000, 'Should be no more than 1000000'),
         terms: Yup.boolean()
                 .required('Need to agree with terms')
-                .oneOf([true], 'Need to agree with terms')
+                .oneOf([true], 'Need to agree with terms'),
+        company_intro: Yup.mixed()
+                        // .nullable()
+                        // .notRequired()
+                        .test(
+                          "fileFormat",
+                          "Unsupported format, allowed only image, pdf, xls, xlxs",
+                          (value) => {
+                            if (value) {
+                              return SUPPORTED_FORMATS.includes(value.type);
+                            } else {
+                              return true;
+                            }
+                          }                          
+                        )
       })}
       onSubmit = {values => {
         let formData = new FormData();
@@ -271,19 +294,19 @@ const MyFinalForm = () => {
           <div className='button_wrapper'>
             <label>
               <Field
-              type="radio" 
-              name="jv_stage" 
-              value="JV 설립 전"/>
+              type='radio' 
+              name='jv_stage' 
+              value='JV 설립 전'/>
               JV 설립 전
             </label>
             <label>
               <Field 
-              type="radio" 
-              name="jv_stage" 
-              value="JV 설립 후"/>
+              type='radio' 
+              name='jv_stage' 
+              value='JV 설립 후'/>
               JV 설립 후
             </label>   
-            <ErrorMessage className="error" name='jv_stage' component='div'/>         
+            <ErrorMessage className='error' name='jv_stage' component='div'/>         
           </div>
           {values.jv_stage === 'JV 설립 전' ? (
             <>
@@ -307,27 +330,27 @@ const MyFinalForm = () => {
                       <h3>발굴 파트너사 검증을 위해 필요한 서류를 제출해주세요. 파일크기는 15MB를 초과할 수 없습니다.</h3>
                       <ol>
                         <li>
-                          <label htmlFor="company_intro">기업 및 사업소개 자료 (영문, 자유양식)</label>                      
+                          <label htmlFor='company_intro'>기업 및 사업소개 자료 (영문, 자유양식)</label>                      
                           <input 
-                            id="company_intro" 
-                            name="company_intro" 
-                            type="file" 
+                            id='company_intro' 
+                            name='company_intro' 
+                            type='file' 
                             onChange={(event) => {
-                            setFieldValue("company_intro", event.currentTarget.files[0]);
-                          }} />                       
+                            setFieldValue('company_intro', event.currentTarget.files[0]);
+                            }}
+                            />
+                          <ErrorMessage className='error' name='company_intro' component='div'/>                       
                         </li>
                         <li>
-                          <label htmlFor="partner_profile">잠재 파트너사 프로필 (영문,
-                            <a href="https://drive.google.com/uc?export=dow
-                              nload&amp;id=1EjYKNMkUmfPQbAWWbvdZux
-                              Md0wb-Lu5-">센터양식</a>
+                          <label htmlFor='partner_profile'>잠재 파트너사 프로필 (영문,
+                            <a href='https://drive.google.com/uc?export=download&amp;id=1EjYKNMkUmfPQbAWWbvdZuxMd0wb-Lu5-'>센터양식</a>
                             )</label>                      
                           <input 
-                            id="partner_profile" 
-                            name="partner_profile" 
-                            type="file" 
+                            id='partner_profile' 
+                            name='partner_profile' 
+                            type='file' 
                             onChange={(event) => {
-                            setFieldValue("partner_profile", event.currentTarget.files[0]);
+                            setFieldValue('partner_profile', event.currentTarget.files[0]);
                           }} />
                         </li> 
                       </ol>                      
@@ -338,17 +361,15 @@ const MyFinalForm = () => {
                       <h3>발굴 파트너사 검증을 위해 필요한 서류를 제출해주세요. 파일크기는 15MB를 초과할 수 없습니다.</h3>   
                       <ol>
                         <li>
-                          <label htmlFor="partner_profile">잠재 파트너사 프로필 (영문,
-                            <a href="https://drive.google.com/uc?export=dow
-                              nload&amp;id=1EjYKNMkUmfPQbAWWbvdZux
-                              Md0wb-Lu5-">센터양식</a>
+                          <label htmlFor='partner_profile'>잠재 파트너사 프로필 (영문,
+                            <a href='https://drive.google.com/uc?export=download&id=1fzYLN6YcJAqqlO5p4NHP1H8AN_xdqXHC'>센터양식</a>
                             )</label>                      
                           <input 
-                            id="partner_profile" 
-                            name="partner_profile" 
-                            type="file" 
+                            id='partner_profile' 
+                            name='partner_profile' 
+                            type='file' 
                             onChange={(event) => {
-                            setFieldValue("partner_profile", event.currentTarget.files[0]);
+                            setFieldValue('partner_profile', event.currentTarget.files[0]);
                           }} />  
                         </li>  
                       </ol>                      
@@ -378,10 +399,10 @@ const MyFinalForm = () => {
               ) : null}
             </>
           ): null}
-          <label htmlFor="description">해당 컨설팅 서비스가 필요한 이유가 무엇인가요?</label>
+          <label htmlFor='description'>해당 컨설팅 서비스가 필요한 이유가 무엇인가요?</label>
           <Field 
-            id="description"
-            name="description"
+            id='description'
+            name='description'
             as='textarea'
           />
         </>) : null}
@@ -391,37 +412,37 @@ const MyFinalForm = () => {
           <div className='button_wrapper'>
             <label>
               <Field
-              type="radio" 
-              name="jv_stage" 
-              value="JV 설립 전"/>
+              type='radio' 
+              name='jv_stage' 
+              value='JV 설립 전'/>
               JV 설립 전
             </label>
             <label>
               <Field 
-              type="radio" 
-              name="jv_stage" 
-              value="JV 설립 후"/>
+              type='radio' 
+              name='jv_stage' 
+              value='JV 설립 후'/>
               JV 설립 후
             </label>   
-            <ErrorMessage className="error" name='jv_stage' component='div'/>         
+            <ErrorMessage className='error' name='jv_stage' component='div'/>         
           </div>
           <h3>국외 여비 지원의 신청 단계를 선택해주세요</h3>
           <div className='button_wrapper'>
             <label>
               <Field
-              type="radio" 
-              name="travel_expense" 
-              value="Apply for approval to plan for Travel Expense (국외여비 활용계획 승인 신청)"/>              
+              type='radio' 
+              name='travel_expense' 
+              value='Apply for approval to plan for Travel Expense (국외여비 활용계획 승인 신청)'/>              
 							국외여비 활용계획 승인 신청										
             </label>
             <label>
               <Field 
-              type="radio" 
-              name="travel_expense" 
-              value="Apply for post-payment of Travel Expense (국외여비 사후 정산 신청)"/>              
+              type='radio' 
+              name='travel_expense' 
+              value='Apply for post-payment of Travel Expense (국외여비 사후 정산 신청)'/>              
 							국외여비 사후정산 신청										
             </label>   
-            <ErrorMessage className="error" name='travel_expense' component='div'/>         
+            <ErrorMessage className='error' name='travel_expense' component='div'/>         
           </div>
           <MySelectInput
             label='통화'
@@ -437,10 +458,10 @@ const MyFinalForm = () => {
                 name='travel_expense_amount'
                 type='number'                
               />
-              <label htmlFor="description">국외여비 활용 계획을 간단히 설명해주세요.</label>
+              <label htmlFor='description'>국외여비 활용 계획을 간단히 설명해주세요.</label>
               <Field 
-                id="description"
-                name="description"
+                id='description'
+                name='description'
                 as='textarea'
               />
               <h3>국외여비 활용 신청을 위해 필요한 서류를 제출해주세요. 파일크기는 15MB를 초과할 수 없습니다.</h3>
@@ -452,7 +473,7 @@ const MyFinalForm = () => {
                       <input 
                         id={item.name} 
                         name={item.name}
-                        type="file" 
+                        type='file'
                         onChange={(event) => {
                         setFieldValue(item.name, event.currentTarget.files[0]);
                       }} />
@@ -470,10 +491,10 @@ const MyFinalForm = () => {
                 name='travel_expense_amount'
                 type='number'                
               />
-              <label htmlFor="description">국외여비 활용 결과를 간단히 설명해주세요.</label>
+              <label htmlFor='description'>국외여비 활용 결과를 간단히 설명해주세요.</label>
               <Field 
-                id="description"
-                name="description"
+                id='description'
+                name='description'
                 as='textarea'
               />
               <h3>국외여비 활용 신청을 위해 필요한 서류를 제출해주세요. 파일크기는 15MB를 초과할 수 없습니다.</h3>
@@ -485,7 +506,7 @@ const MyFinalForm = () => {
                       <input 
                         id={item.name} 
                         name={item.name}
-                        type="file" 
+                        type='file' 
                         onChange={(event) => {
                         setFieldValue(item.name, event.currentTarget.files[0]);
                       }} />
@@ -502,40 +523,41 @@ const MyFinalForm = () => {
           <div className='button_wrapper'>
             <label>
               <Field
-              type="radio" 
-              name="jv_stage" 
-              value="JV 설립 전"
-              disabled/>
+              type='radio' 
+              name='jv_stage' 
+              value='JV 설립 전'
+              disabled
+              />
               JV 설립 전
             </label>
             <label>
               <Field 
-              type="radio" 
-              name="jv_stage" 
-              value="JV 설립 후"
-              checked
-              disabled/>
+              type='radio' 
+              name='jv_stage' 
+              value='JV 설립 후'              
+              checked={values.jv_stage = 'JV 설립 후'}              
+              />
               JV 설립 후
             </label>   
-            <ErrorMessage className="error" name='jv_stage' component='div'/>         
+            <ErrorMessage className='error' name='jv_stage' component='div'/>         
           </div>
           <h3>국외 여비 지원의 신청 단계를 선택해주세요</h3>
           <div className='button_wrapper'>
             <label>
               <Field
-              type="radio" 
-              name="office_rent" 
-              value="Apply for approval to plan for JV Office rent (현지 임차료 활용 승인 신청)"/>              
+              type='radio'
+              name='office_rent' 
+              value='Apply for approval to plan for JV Office rent (현지 임차료 활용 승인 신청)'/>              
 							현지 임차료 활용 승인 신청										
             </label>
             <label>
               <Field 
-              type="radio" 
-              name="office_rent" 
-              value="Apply for post-payment of JV Office rent Fee (현지 임차료 사후 정산 신청)"/>              
+              type='radio' 
+              name='office_rent' 
+              value='Apply for post-payment of JV Office rent Fee (현지 임차료 사후 정산 신청)'/>              
 							현지 임차료 사후 정산 신청										
             </label>   
-            <ErrorMessage className="error" name='travel_expense' component='div'/>         
+            <ErrorMessage className='error' name='travel_expense' component='div'/>         
           </div>
           <MySelectInput
             label='통화'
@@ -561,7 +583,7 @@ const MyFinalForm = () => {
                       <input 
                         id={item.name} 
                         name={item.name}
-                        type="file" 
+                        type='file' 
                         onChange={(event) => {
                         setFieldValue(item.name, event.currentTarget.files[0]);
                       }} />
@@ -589,7 +611,7 @@ const MyFinalForm = () => {
                       <input 
                         id={item.name} 
                         name={item.name}
-                        type="file" 
+                        type='file' 
                         onChange={(event) => {
                         setFieldValue(item.name, event.currentTarget.files[0]);
                       }} />
