@@ -1,6 +1,7 @@
 import './App.css';
-import {ThemeContextProvider} from './components/context/ThemeContext';
-import {Box} from './components/context/Box';
+import {UserContextProvider} from './components/context/UserContext';
+import {User} from './components/context/User';
+
 
 
 function App() {
@@ -8,10 +9,9 @@ function App() {
   return (
     <div className="App">      
       <h2>Hello</h2>
-      <ThemeContextProvider>
-        <Box/>
-      </ThemeContextProvider>
-          
+      <UserContextProvider>
+        <User/>
+      </UserContextProvider>          
     </div>
   );
 }
