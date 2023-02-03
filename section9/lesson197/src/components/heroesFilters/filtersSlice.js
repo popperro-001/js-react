@@ -29,7 +29,7 @@ const filtersSlice = createSlice({
             .addCase(fetchFilters.pending, state => {state.filtersLoadingStatus = 'loading';})
             .addCase(fetchFilters.fulfilled, (state, action) => {
                 state.filtersLoadingStatus = 'idle';
-                state.filters = action.payload;
+                filtersAdapter.setAll(state, action.payload);
             })
             .addCase(fetchFilters.rejected, state => {state.filtersLoadingStatus = 'error';})
             .addDefaultCase(() => {})
